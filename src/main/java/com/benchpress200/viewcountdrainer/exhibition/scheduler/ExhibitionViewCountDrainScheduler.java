@@ -1,7 +1,6 @@
-package com.benchpress200.viewcountdrainer.singlework.scheduler;
+package com.benchpress200.viewcountdrainer.exhibition.scheduler;
 
-
-import com.benchpress200.viewcountdrainer.singlework.service.SingleWorkViewCountDrainService;
+import com.benchpress200.viewcountdrainer.exhibition.service.ExhibitionViewCountDrainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -12,22 +11,22 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class SingleWorkViewCountDrainScheduler {
-    private final SingleWorkViewCountDrainService singleWorkViewCountDrainService;
+public class ExhibitionViewCountDrainScheduler {
+    private final ExhibitionViewCountDrainService exhibitionViewCountDrainService;
 
     @Scheduled(fixedDelayString = "${spring.schedule.drain.fixed-delay}")
     public void drain() {
         long start = System.currentTimeMillis();
 
         try {
-            int processed = singleWorkViewCountDrainService.drain();
+            int processed = exhibitionViewCountDrainService.drain();
             long elapsed = System.currentTimeMillis() - start;
 
-            log.info("Singlework's view count drain. processed={}, elapsed={}ms",
+            log.info("Exhibition's view count drain. processed={}, elapsed={}ms",
                     processed,
                     elapsed
             );
-        } catch (RedisSystemException e) {
+        } catch (RedisSystemException e){
             log.error("Redis failure during view count drain", e);
         } catch (DataAccessException e) {
             log.error("Database failure during view count drain", e);

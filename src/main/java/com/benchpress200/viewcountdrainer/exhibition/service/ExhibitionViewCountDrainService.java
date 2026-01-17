@@ -1,4 +1,4 @@
-package com.benchpress200.viewcountdrainer.singlework.service;
+package com.benchpress200.viewcountdrainer.exhibition.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SingleWorkViewCountDrainService {
-    private static final String SINGLEWORK_VIEW_COUNT_KEY = "singlework:view:*";
+public class ExhibitionViewCountDrainService {
+    private static final String SINGLEWORK_VIEW_COUNT_KEY = "exhibition:view:*";
     private static final int SCAN_BUCKET_COUNT = 1000;
     private static final int PROCESSED_COUNT_INIT = 0;
     private static final long VIEW_COUNT_INIT = 0L;
@@ -42,7 +42,7 @@ public class SingleWorkViewCountDrainService {
 
                 // DB 반영
                 jdbcTemplate.update(
-                        "UPDATE singleworks SET view_count = view_count + ? WHERE id = ?",
+                        "UPDATE exhibitions SET view_count = view_count + ? WHERE id = ?",
                         viewCount,
                         singleWorkId
                 );
@@ -55,7 +55,7 @@ public class SingleWorkViewCountDrainService {
     }
 
     private Long extractId(String key) {
-        // singlework:view:{id}
+        // exhibition:view:{id}
         int idx = key.lastIndexOf(':');
         String id = key.substring(idx + 1);
 
