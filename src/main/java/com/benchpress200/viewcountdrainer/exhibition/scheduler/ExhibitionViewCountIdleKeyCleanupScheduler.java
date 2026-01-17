@@ -1,6 +1,6 @@
-package com.benchpress200.viewcountdrainer.singlework.scheduler;
+package com.benchpress200.viewcountdrainer.exhibition.scheduler;
 
-import com.benchpress200.viewcountdrainer.singlework.service.SingleWorkViewCountIdleKeyCleanupService;
+import com.benchpress200.viewcountdrainer.exhibition.service.ExhibitionViewCountIdleKeyCleanupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.RedisSystemException;
@@ -10,20 +10,19 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class SingleWorkViewCountIdleKeyCleanupScheduler {
-    private final SingleWorkViewCountIdleKeyCleanupService singleWorkViewCountIdleKeyCleanupService;
-
+public class ExhibitionViewCountIdleKeyCleanupScheduler {
+    private final ExhibitionViewCountIdleKeyCleanupService exhibitionViewCountIdleKeyCleanupService;
 
     @Scheduled(cron = "${spring.schedule.cleanup.cron}")
     public void cleanup() {
         long start = System.currentTimeMillis();
 
         try {
-            int removed = singleWorkViewCountIdleKeyCleanupService.cleanup();
+            int removed = exhibitionViewCountIdleKeyCleanupService.cleanup();
             long elapsed = System.currentTimeMillis() - start;
 
             log.info(
-                    "singlework's empty view count cleanup finished. removed={}, elapsed={}ms",
+                    "Exhibition's empty view count cleanup finished. removed={}, elapsed={}ms",
                     removed,
                     elapsed
             );
@@ -31,5 +30,7 @@ public class SingleWorkViewCountIdleKeyCleanupScheduler {
         } catch (RedisSystemException e) {
             log.error("Redis failure during view count cleanup", e);
         }
+
     }
+
 }
