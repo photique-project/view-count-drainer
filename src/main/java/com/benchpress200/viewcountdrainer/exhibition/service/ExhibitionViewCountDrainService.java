@@ -1,11 +1,11 @@
 package com.benchpress200.viewcountdrainer.exhibition.service;
 
+import com.benchpress200.viewcountdrainer.exhibition.repository.ExhibitionViewCountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -18,7 +18,7 @@ public class ExhibitionViewCountDrainService {
     private static final long VIEW_COUNT_INIT = 0L;
 
     private final RedisTemplate<String, Long> redisTemplate;
-    private final JdbcTemplate jdbcTemplate;
+    private final ExhibitionViewCountRepository exhibitionViewCountRepository;
 
     public int drain() {
         int processed = PROCESSED_COUNT_INIT; // 조회수 -> DB 반영한 행 카운팅
@@ -38,14 +38,10 @@ public class ExhibitionViewCountDrainService {
                     continue;
                 }
 
-                Long singleWorkId = extractId(key);
+                Long exhibitionId = extractId(key);
 
                 // DB 반영
-                jdbcTemplate.update(
-                        "UPDATE exhibitions SET view_count = view_count + ? WHERE id = ?",
-                        viewCount,
-                        singleWorkId
-                );
+                exhibitionViewCountRepository.updateViewCount(exhibitionId, viewCount);
 
                 processed++;
             }

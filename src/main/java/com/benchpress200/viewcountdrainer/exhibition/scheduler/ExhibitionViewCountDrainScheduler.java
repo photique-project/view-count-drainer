@@ -1,5 +1,6 @@
 package com.benchpress200.viewcountdrainer.exhibition.scheduler;
 
+import com.benchpress200.viewcountdrainer.common.exception.OutboxPayloadSerializationException;
 import com.benchpress200.viewcountdrainer.exhibition.service.ExhibitionViewCountDrainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,8 @@ public class ExhibitionViewCountDrainScheduler {
             log.error("Redis failure during view count drain", e);
         } catch (DataAccessException e) {
             log.error("Database failure during view count drain", e);
+        } catch (OutboxPayloadSerializationException e) {
+            log.error("Outbox payload serialization failed", e);
         }
     }
 }
