@@ -1,5 +1,6 @@
 package com.benchpress200.viewcountdrainer.singlework.service;
 
+import com.benchpress200.viewcountdrainer.singlework.repository.SingleWorkViewCountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.Cursor;
@@ -18,7 +19,7 @@ public class SingleWorkViewCountDrainService {
     private static final long VIEW_COUNT_INIT = 0L;
 
     private final RedisTemplate<String, Long> redisTemplate;
-    private final JdbcTemplate jdbcTemplate;
+    private final SingleWorkViewCountRepository singleWorkViewCountRepository;
 
     public int drain() {
         int processed = PROCESSED_COUNT_INIT; // 조회수 -> DB 반영한 행 카운팅
@@ -41,11 +42,7 @@ public class SingleWorkViewCountDrainService {
                 Long singleWorkId = extractId(key);
 
                 // DB 반영
-                jdbcTemplate.update(
-                        "UPDATE singleworks SET view_count = view_count + ? WHERE id = ?",
-                        viewCount,
-                        singleWorkId
-                );
+                singleWorkViewCountRepository.updateViewCount(singleWorkId, viewCount);
 
                 processed++;
             }
