@@ -24,7 +24,7 @@ public class SingleWorkViewCountDrainScheduler {
             int processed = singleWorkViewCountDrainService.drain();
             long elapsed = System.currentTimeMillis() - start;
 
-            log.info("Singlework's view count drain. processed={}, elapsed={}ms",
+            log.info("Singlework's view count drain: processed={}, elapsed={}ms",
                     processed,
                     elapsed
             );

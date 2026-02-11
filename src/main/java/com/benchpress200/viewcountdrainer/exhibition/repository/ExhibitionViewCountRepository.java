@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ExhibitionViewCountRepository {
     private static final String AGGREGATE_TYPE = "exhibition";
-    private static final String EVENT_TYPE = "updatedViewCount";
+    private static final String EVENT_TYPE = "viewCountUpdated";
 
     private final ObjectMapper objectMapper;
     private final JdbcTemplate jdbcTemplate;
@@ -28,7 +28,13 @@ public class ExhibitionViewCountRepository {
                 exhibitionId
         );
 
-        ViewCountPayload viewCountPayload = new ViewCountPayload(viewCount);
+        Long currentViewCount = jdbcTemplate.queryForObject(
+                "SELECT view_count FROM exhibitions WHERE id = ?",
+                Long.class,
+                exhibitionId
+        );
+
+        ViewCountPayload viewCountPayload = new ViewCountPayload(exhibitionId, currentViewCount);
         JsonNode payload = objectMapper.valueToTree(viewCountPayload);
 
         jdbcTemplate.update(

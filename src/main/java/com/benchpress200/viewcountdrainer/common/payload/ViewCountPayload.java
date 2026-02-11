@@ -2,5 +2,5 @@ package com.benchpress200.viewcountdrainer.common.payload;
 
 
 
-public record ViewCountPayload(Long viewCount) {
+public record ViewCountPayload(Long id, Long viewCount) {
 }
