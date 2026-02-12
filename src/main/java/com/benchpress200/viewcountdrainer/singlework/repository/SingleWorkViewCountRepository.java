@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SingleWorkViewCountRepository {
     private static final String AGGREGATE_TYPE = "singlework";
-    private static final String EVENT_TYPE = "viewCountUpdated";
+    private static final String EVENT_TYPE = "viewCountIncremented";
 
     private final ObjectMapper objectMapper;
     private final JdbcTemplate jdbcTemplate;

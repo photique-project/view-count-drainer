@@ -1,8 +1,6 @@
 package com.benchpress200.viewcountdrainer.exhibition.repository;
 
-import com.benchpress200.viewcountdrainer.common.exception.OutboxPayloadSerializationException;
 import com.benchpress200.viewcountdrainer.common.payload.ViewCountPayload;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
@@ -15,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ExhibitionViewCountRepository {
     private static final String AGGREGATE_TYPE = "exhibition";
-    private static final String EVENT_TYPE = "viewCountUpdated";
+    private static final String EVENT_TYPE = "viewCountIncremented";
 
     private final ObjectMapper objectMapper;
     private final JdbcTemplate jdbcTemplate;
